@@ -27,7 +27,7 @@ function ProductList() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div id= "root">
+    <div id="root">
       <h1>Product List</h1>
       <pre>{JSON.stringify(products, null, 2)}</pre>
     </div>
