@@ -1,37 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import 'regenerator-runtime/runtime';
 
+import React, { useState } from "react";
 
-function ProductList() {
-  const [products, setProducts] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+import './../styles/App.css';
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://dummyjson.com/products');
-        setProducts(response.data);  // Update state with fetched data
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);  // Ensure loading state is updated
-      }
-    };
+ 
 
-    fetchData();  // Call the async function
-  }, []);
+const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"]
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+ 
+
+const App = () => {
+
+ 
+
+  const[data, setData] = useState(fruits)
+
+  const[filteredData, setFilteredData] = useState(fruits)
+
+  
+
+ 
 
   return (
-    <div id="root">
-      <h1>Product List</h1>
-      <pre>{JSON.stringify(products, null, 2)}</pre>
+
+    <div>
+
+        <input onChange={(e) => {
+
+          const arr = data.filter((item) => {
+
+            return item.includes(e.target.value)
+
+          })
+
+          setFilteredData(arr)
+
+        }} />
+
+        <ul>
+
+          {filteredData.map((item) => {
+
+            return <li>{item}</li>
+
+          })}
+
+        </ul>
+
     </div>
-  );
+
+  )
+
 }
 
-export default ProductList;
+ 
+
+export default App
