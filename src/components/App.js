@@ -1,23 +1,68 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import './../styles/App.css';
 
  
 
-const fruits = ["apple", "banana", "cherry", "date", "elderberry", "fig"]
-
- 
-
 const App = () => {
 
+  const [text, setText] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState(null);
+
  
 
-  const[data, setData] = useState(fruits)
+  useEffect(() => {
 
-  const[filteredData, setFilteredData] = useState(fruits)
+    fetch("https://dummyjson.com/products")
 
-  
+      .then((response) => {
+
+        if (!response.ok) {
+
+          throw new Error("Network response was not ok");
+
+        }
+
+        return response.json();
+
+      })
+
+      .then((json) => {
+
+        setText(json);
+
+        setLoading(false);
+
+      })
+
+      .catch((error) => {
+
+        setError(error.message);
+
+        setLoading(false);
+
+      });
+
+  }, []);
+
+ 
+
+  if (loading) {
+
+    return <h1>Loading...</h1>;
+
+  }
+
+ 
+
+  if (error) {
+
+    return <h1>An error occurred: {error}</h1>;
+
+  }
 
  
 
@@ -25,34 +70,27 @@ const App = () => {
 
     <div>
 
-        <input onChange={(e) => {
+      <h1>
 
-          const arr = data.filter((item) => {
+      Data Fetched from API
 
-            return item.includes(e.target.value)
-
-          })
-
-          setFilteredData(arr)
-
-        }} />
-
-        <ul>
-
-          {filteredData.map((item) => {
-
-            return <li>{item}</li>
-
-          })}
-
-        </ul>
-
-    </div>
-
-  )
-
-}
+      </h1>
 
  
 
-export default App
+      <pre>
+
+        {JSON.stringify(text, null, 2)}
+
+      </pre>
+
+    </div>
+
+  );
+
+};
+
+ 
+
+export default App;
+
